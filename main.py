@@ -1,4 +1,4 @@
-from wb_data_fetcher import WorldBankAsyncDataFetcher, WorldBankDataFetcher
+from wb_data_fetcher import WorldBankAsyncDataFetcher, WorldBankSyncDataFetcher
 
 # Define URLs for the World Bank API
 BASE_URL = "https://api.worldbank.org/v2/country"
@@ -34,9 +34,9 @@ urls_dataframes = [
 # Create an instance of async fetcher
 print("Async fetcher is running...")
 fetcher_async = WorldBankAsyncDataFetcher(urls_dataframes)
-fetcher_async.fetch_all_data()
+fetcher_async.fetch_all_data(n=10)
 
 # Create an instance of sync fetcher
 print("Sync fetcher is running...")
-fetcher_sync = WorldBankDataFetcher(urls_dataframes)
-fetcher_sync.fetch_all_data()
+fetcher_sync = WorldBankSyncDataFetcher(urls_dataframes)
+fetcher_sync.fetch_all_data(n=10)

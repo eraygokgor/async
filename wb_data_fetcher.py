@@ -77,7 +77,7 @@ class WorldBankAsyncDataFetcher:
 ########################################################################################################################
 
 
-class WorldBankDataFetcher:
+class WorldBankSyncDataFetcher:
     """
     This class fetches data from the World Bank API synchronously.
     """
