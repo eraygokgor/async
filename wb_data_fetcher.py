@@ -8,12 +8,25 @@ from utils import function_timer
 
 
 class WorldBankAsyncDataFetcher:
+    """
+    This class fetches data from the World Bank API asynchronously.
+    """
     def __init__(self, urls_dataframes: list[dict]) -> None:
+        """
+        Initialize the WorldBankAsyncDataFetcher class.
+        :param urls_dataframes: A list of dictionaries containing the URLs and column renaming for each DataFrame
+        """
         self.urls_dataframes = urls_dataframes
         self.data_frames = []
 
     @staticmethod
     async def fetch_data(session: ClientSession, url: str) -> list[dict]:
+        """
+        Fetch data from the World Bank API asynchronously.
+        :param session: A client session from aiohttp
+        :param url: The URL to fetch data from
+        :return: A list of dictionaries containing the fetched data
+        """
         data = []
         page = 1
         is_not_finished = True
@@ -41,6 +54,10 @@ class WorldBankAsyncDataFetcher:
             self.data_frames = [pd.DataFrame(result) for result in results]
 
     def process_data_frames(self) -> None:
+        """
+        Process the data frames by renaming columns as specified in the data dictionary.
+        :return: None
+        """
         for idx, data in enumerate(self.urls_dataframes):
             df = self.data_frames[idx]
             # Rename columns as specified in the data dictionary
@@ -48,6 +65,10 @@ class WorldBankAsyncDataFetcher:
 
     @function_timer
     def fetch_all_data(self) -> list:
+        """
+        Fetch all data from the World Bank API asynchronously.
+        :return: A list of pandas DataFrames containing the fetched data
+        """
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.fetch_all())
         self.process_data_frames()
@@ -57,12 +78,25 @@ class WorldBankAsyncDataFetcher:
 
 
 class WorldBankDataFetcher:
+    """
+    This class fetches data from the World Bank API synchronously.
+    """
     def __init__(self, urls_dataframes: list) -> None:
+        """
+        Initialize the WorldBankDataFetcher class.
+        :param urls_dataframes: A list of dictionaries containing the URLs and column renaming for each DataFrame
+        """
         self.urls_dataframes = urls_dataframes
         self.data_frames = []
 
     @staticmethod
     def fetch_data(url: str, rename_columns: dict) -> pd.DataFrame:
+        """
+        Fetch data from the World Bank API synchronously.
+        :param url: The URL to fetch data from
+        :param rename_columns: A dictionary containing the column renaming
+        :return: A pandas DataFrame containing the fetched data
+        """
         data = []
         page = 1
         is_not_finished = True
@@ -88,6 +122,10 @@ class WorldBankDataFetcher:
 
     @function_timer
     def fetch_all_data(self) -> list:
+        """
+        Fetch all data from the World Bank API synchronously.
+        :return: A list of pandas DataFrames containing the fetched data
+        """
         for data in self.urls_dataframes:
             df = self.fetch_data(data['url'], data['rename_columns'])
             self.data_frames.append(df)
